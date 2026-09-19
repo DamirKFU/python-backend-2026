@@ -10,9 +10,11 @@ Receive = Callable[[], Awaitable[dict[str, Any]]]
 def fibonacci(n: int) -> int:
     if n <= 1:
         return n
+
     a, b = 0, 1
     for _ in range(2, n + 1):
         a, b = b, a + b
+
     return b
 
 
@@ -20,6 +22,7 @@ def factorial(n: int) -> int:
     result = 1
     for i in range(2, n + 1):
         result *= i
+
     return result
 
 
@@ -72,6 +75,7 @@ async def factorial_handler(scope: dict[str, Any], receive: Receive, send: Send)
     if number is None:
         await send_response(send, HTTPStatus.UNPROCESSABLE_ENTITY, b"Unprocessable Entity")
         return
+
     if number < 0:
         await send_response(send, HTTPStatus.BAD_REQUEST, b"Bad Request")
         return
@@ -93,6 +97,7 @@ async def fibonacci_handler(scope: dict[str, Any], receive: Receive, send: Send)
     if number is None:
         await send_response(send, HTTPStatus.UNPROCESSABLE_ENTITY, b"Unprocessable Entity")
         return
+
     if number < 0:
         await send_response(send, HTTPStatus.BAD_REQUEST, b"Bad Request")
         return
@@ -117,6 +122,7 @@ async def mean_handler(scope: dict[str, Any], receive: Receive, send: Send):
     ):
         await send_response(send, HTTPStatus.UNPROCESSABLE_ENTITY, b"Unprocessable Entity")
         return
+
     if not data:
         await send_response(send, HTTPStatus.BAD_REQUEST, b"Bad Request")
         return
