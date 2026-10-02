@@ -66,15 +66,18 @@ def serialize_cart(cart_id: int) -> Cart:
     cart_data = db[CART_TABLE][cart_id]
     cart_items = []
     price = 0.0
-    for item_id, item in cart_data.items():
-        price += item["price"] * item["quantity"]
-        item = CartItem(
-            id=item_id,
-            name=item["name"],
-            quantity=item["quantity"],
-            available=item["available"],
+
+    for item_id, quantity in cart_data.items():
+        item = db[ITEMS_TABLE][item_id]
+        price += item.price * quantity
+        cart_items.append(
+            CartItem(
+                id=item_id,
+                name=item.name,
+                quantity=quantity,
+                available=not item.deleted,
+            )
         )
-        cart_items.append(item)
 
     return Cart(id=cart_id, items=cart_items, price=price)
 
